@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/three-nebula@10.0.3/build/three-nebula.min.js"></script>
+
 </head>
 <body>
   <div class="custom-cursor"></div>
@@ -26,19 +29,40 @@
       <a href="#">Profile</a>
     </nav>
   </div>
+
+  
+  
+  <div id="chat-toggle" onclick="toggleChat()">💬</div>
+
+<div class="chatbot-container" id="chatbot-container" style="display: none;">
+  <div class="chat-header">
+    ChatBot
+    <span onclick="toggleChat()" style="float: right; cursor: pointer;">✖</span>
+  </div>
+  <div class="chat-box" id="chat-box">
+    <div class="bot-message">👋 Привіт! Що тебе цікавить?</div>
+  </div>
+  <div class="chat-buttons" id="chat-buttons">
+    <button onclick="handleMainOption('Фільм')">🎬 Фільм</button>
+    <button onclick="handleMainOption('Допомога')">❓ Допомога</button>
+  </div>
+</div>
+
   
   <div class="hero">
     <div class="video-background">
-      <iframe 
-        src="https://www.youtube.com/embed/8g18jFHCLXk?autoplay=1&mute=1&controls=0&loop=1&playlist=8g18jFHCLXk&modestbranding=1&rel=0&showinfo=0" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-      </iframe>
+<iframe
+  src="https://www.youtube.com/embed/8g18jFHCLXk?autoplay=1&mute=1&loop=1&playlist=8g18jFHCLXk"
+  width="100%" height="100%"
+  frameborder="0"
+  allow="autoplay; encrypted-media; fullscreen"
+  allowfullscreen>
+</iframe>
+
 
     </div>
     <button class="btn1 btn-1 hover-filled-slide-down">
-      <span>rating<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffffff"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg></span>
+      <a href="#imdb-section"><span>rating<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffffff"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"/></svg></span></a>
     </button>
     <div class="overlay"></div>
     <div class="hero-content">
@@ -66,7 +90,7 @@
     </div>
   </div>
 
-  <div class="c1"><h1 class="TOP1"><svg xmlns="http://www.w3.org/2000/svg" height="37px" viewBox="0 -960 960 960" width="47px" fill="#e3e3e3"><path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/></svg> IMDb Charts</h1></div>
+  <section id="imdb-section"><div class="c1"><h1 class="TOP1"><svg xmlns="http://www.w3.org/2000/svg" height="37px" viewBox="0 -960 960 960" width="47px" fill="#e3e3e3"><path d="m136-240-56-56 296-298 160 160 208-206H640v-80h240v240h-80v-104L536-320 376-480 136-240Z"/></svg> IMDb Charts</h1></section></section></div>
   <div class="line1"></div>
   <div id="originals-section" class="content-section" style="display: flex;">  
 <div id="originals-section" class="content-section">
@@ -353,11 +377,17 @@
 
 <section class="hero second-hero">
   <div class="video-background second-video">
-    <iframe src="https://www.youtube.com/embed/zqYlJQ0JxLA?autoplay=1&mute=1&loop=1&controls=0&playlist=zqYlJQ0JxLA" 
-            frameborder="0" 
-            allow="autoplay; fullscreen" 
-            allowfullscreen>
-    </iframe>
+<iframe
+  src="https://www.youtube.com/embed/9J_jMaLqO9E?autoplay=1&mute=1&loop=1&controls=0&playlist=9J_jMaLqO9E"
+  frameborder="0"
+  allow="autoplay; encrypted-media; picture-in-picture"
+  allowfullscreen
+  loading="lazy"
+  playsinline
+  muted
+></iframe>
+
+
   </div>
   <div class="overlay"></div>
   <div class="hero-content">
@@ -558,7 +588,84 @@ Gon Freecss aspires to become a Hunter, an exceptional being capable of greatnes
   });
 
 
-
 </script>
+<script>
+  function toggleChat() {
+    const container = document.getElementById("chatbot-container");
+    const toggle = document.getElementById("chat-toggle");
+    if (container.style.display === "none") {
+      container.style.display = "block";
+      toggle.style.display = "none";
+    } else {
+      container.style.display = "none";
+      toggle.style.display = "block";
+    }
+  }
+
+  function appendMessage(sender, text) {
+    const chatBox = document.getElementById("chat-box");
+    const msgDiv = document.createElement("div");
+    msgDiv.className = sender === "user" ? "user-message" : "bot-message";
+    msgDiv.innerText = text;
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function handleMainOption(option) {
+    appendMessage("user", option);
+    
+    if (option === "Фільм") {
+      appendMessage("bot", "Окей! Обери жанр:");
+      showGenreButtons();
+    } else if (option === "Допомога") {
+      appendMessage("bot", "Я можу порекомендувати фільм за жанром.");
+    }
+  }
+
+  function showGenreButtons() {
+    const buttons = document.getElementById("chat-buttons");
+    buttons.innerHTML = `
+      <button onclick="handleGenre('Бойовик')">🔫 Бойовик</button>
+      <button onclick="handleGenre('Комедія')">😂 Комедія</button>
+      <button onclick="handleGenre('Фантастика')">🚀 Фантастика</button>
+      <button onclick="handleGenre('Драма')">🎭 Драма</button>
+      <button onclick="restartChat()">🔙 Назад</button>
+    `;
+  }
+
+  function handleGenre(genre) {
+    appendMessage("user", genre);
+
+    const recommendations = {
+      "Бойовик": "Спробуй подивитися 'John Wick'. 💥",
+      "Комедія": "Рекомендую 'The Grand Budapest Hotel'. 😂",
+      "Фантастика": "Подивись 'Interstellar' або 'Dune'. 🚀",
+      "Драма": "Спробуй 'The Shawshank Redemption'. 🎭"
+    };
+
+    const reply = recommendations[genre] || "Немає рекомендації 😢";
+    appendMessage("bot", reply);
+    showBackButton();
+  }
+
+  function showBackButton() {
+    const buttons = document.getElementById("chat-buttons");
+    buttons.innerHTML = `
+      <button onclick="restartChat()">🔙 Повернутись назад</button>
+    `;
+  }
+
+  function restartChat() {
+    const buttons = document.getElementById("chat-buttons");
+    buttons.innerHTML = `
+      <button onclick="handleMainOption('Фільм')">🎬 Фільм</button>
+      <button onclick="handleMainOption('Допомога')">❓ Допомога</button>
+    `;
+    appendMessage("bot", "Що ще тебе цікавить?");
+  }
+
+  
+</script>
+
 </body>
 </html>
